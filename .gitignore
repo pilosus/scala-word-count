@@ -1,6 +1,10 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
+# sbt
+# (may want to keep parts of 'project')
+bin/
+project/*
+!project/plugins.sbt
+target/
+build/
 
 # IntelliJ project files
 .idea
@@ -10,3 +14,11 @@ gen### Scala template
 *.class
 *.log
 
+# mac
+.DS_Store
+
+# other?
+.history
+.scala_dependencies
+.cache
+.cache-main
