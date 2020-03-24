@@ -44,10 +44,8 @@ jobs:
         env:
           APP_VERSION: ${{ steps.tag.outputs.tag }}
         run: sbt package
-      - name: Debug
-        run: ls -lthR target/scala-*
       - name: Upload jar artifact
         uses: actions/upload-artifact@v1
         with:
           name: wordcount_${{ steps.tag.outputs.tag }}.jar
-          path: target/scala-$SCALA_VERSION/wordcount_${{ steps.tag.outputs.tag }}.jar
+          path: target/scala-${{ env.SCALA_VERSION }}/wordcount_${{ env.SCALA_VERSION }}-${{ steps.tag.outputs.tag }}.jar
