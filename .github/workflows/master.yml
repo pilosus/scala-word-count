@@ -50,7 +50,7 @@ jobs:
       - name: Get git tag
         id: tag
         run: |
-          echo ::set-output name=tag::"$(git describe --tags --long --dirty)"
+          echo ::set-output name=tag::"$(git describe --tags)"
       - uses: olafurpg/setup-scala@v5
       - name: Package
         env:
