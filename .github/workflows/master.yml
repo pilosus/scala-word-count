@@ -1,9 +1,10 @@
-name: pr
+name: master
 
 on:
-  pull_request:
+  push:
     branches:
-      - "*"
+      - master
+
 env:
   SCALA_VERSION: 2.12
 
@@ -29,8 +30,19 @@ jobs:
       - name: Check code style
         run: sbt scalastyle
 
-  pack:
+  bump:
+    runs-on: ubuntu-latest
     needs: [build, lint]
+    name: Set tag
+    steps:
+      - uses: actions/checkout@v1
+      - name: GitHub tag bump
+        uses: anothrNick/github-tag-action@1.7.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  pack:
+    needs: bump
     runs-on: ubuntu-latest
     name: Create package
     steps:
