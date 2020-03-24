@@ -11,7 +11,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build Scala Word Count
+    name: Build
     steps:
       - uses: actions/checkout@v1
       - uses: olafurpg/setup-scala@v5
@@ -21,7 +21,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     needs: build
-    name: Code static analysis
+    name: Check code
     steps:
       - uses: actions/checkout@v1
       - uses: olafurpg/setup-scala@v5
