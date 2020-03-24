@@ -1,4 +1,4 @@
-ThisBuild / version := "0.1.0"
+ThisBuild / version := sys.env.get("APP_VERSION").getOrElse("0.1.0")
 ThisBuild / scalaVersion := "2.12.6"
 ThisBuild / organization := "org.pilosus"
 
