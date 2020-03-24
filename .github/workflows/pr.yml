@@ -1,0 +1,51 @@
+name: pr
+
+on:
+  pull_request:
+    branches:
+      - "*"
+env:
+  SCALA_VERSION: 2.12
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - uses: actions/checkout@v1
+      - uses: olafurpg/setup-scala@v5
+      - name: Compile
+        run: sbt compile
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+    name: Check code
+    steps:
+      - uses: actions/checkout@v1
+      - uses: olafurpg/setup-scala@v5
+      - name: Check code formatting
+        run: sbt scalafmtCheckAll
+      - name: Check code style
+        run: sbt scalastyle
+
+  pack:
+    needs: [build, lint]
+    runs-on: ubuntu-latest
+    name: Create package
+    steps:
+      - uses: actions/checkout@v1
+      - name: Get git tag
+        id: tag
+        run: |
+          echo ::set-output name=tag::"$(git describe --tags --long --dirty)"
+      - uses: olafurpg/setup-scala@v5
+      - name: Package
+        env:
+          APP_VERSION: ${{ steps.tag.outputs.tag }}
+        run: sbt package
+      - name: Upload jar artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: wordcount_${{ steps.tag.outputs.tag }}.jar
+          path: target/scala-${{ env.SCALA_VERSION }}/wordcount_${{ env.SCALA_VERSION }}-${{ steps.tag.outputs.tag }}.jar
