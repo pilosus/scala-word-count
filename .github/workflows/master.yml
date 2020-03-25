@@ -30,9 +30,19 @@ jobs:
       - name: Check code style
         run: sbt scalastyle
 
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    name: Run tests
+    steps:
+      - uses: actions/checkout@v1
+      - uses: olafurpg/setup-scala@v5
+      - name: Run unittests
+        run: sbt test
+
   bump:
     runs-on: ubuntu-latest
-    needs: [build, lint]
+    needs: [lint, test]
     name: Set tag
     steps:
       - uses: actions/checkout@v1
